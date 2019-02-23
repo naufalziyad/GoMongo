@@ -5,7 +5,7 @@ import (
 	"context"
 	"log"
 	"models"
-	//"github.com/mongodb/mongo-go-driver/bson"
+	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/mongodb/mongo-go-driver/mongo/options"
 
@@ -45,4 +45,29 @@ func InsertMany(person []models.User) {
 	if err != nil{
 		log.Fatal(err)
 	}
+}
+
+func GetAllUser() []models.User {
+	personal, err := db.Collection(COLLECTIONNAME).Find(context.Background(), bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var arrayPersonal []models.User
+	var idxPersonal models.User
+
+	for personal.Next(context.Background()) {
+		err := personal.Decode(&idxPersonal)
+		if err !=nil {
+			log.Fatal(err)
+		}
+		arrayPersonal = append(arrayPersonal, idxPersonal)
+	}
+
+	if err := personal.Err(); err !=nil {
+		log.Fatal(err)
+	}
+
+	personal.Close(context.Background())
+	return arrayPersonal
 }
