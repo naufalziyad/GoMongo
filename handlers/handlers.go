@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"models"
 	"function"
+	"fmt"
 	"github.com/gorilla/mux"
 )
 
@@ -27,6 +28,19 @@ func GetUserEP(w http.ResponseWriter, r *http.Request) {
 		if p.PersonalInfo.Email == params["email"] {
 			json.NewEncoder(w).Encode(p)
 			return
+		}
+	}
+	json.NewEncoder(w).Encode("User not found")
+}
+
+func DeleteUserEP(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	data := function.GetAllUser()
+	for _, p := range data {
+		if p.PersonalInfo.Email == params["email"] {
+			function.DeleteUser(p)
+			fmt.Fprintf(w, "Delete User Success")
+			return 
 		}
 	}
 	json.NewEncoder(w).Encode("User not found")

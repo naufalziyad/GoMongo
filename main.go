@@ -14,6 +14,7 @@ func main() {
 	router.HandleFunc("/user", handlers.CreateUserEP).Methods("POST")
 	router.HandleFunc("/user", handlers.GetAllUserEP).Methods("GET")
 	router.HandleFunc("/user/{email}", handlers.GetUserEP).Methods("GET")
+	router.HandleFunc("/user/{email}", handlers.DeleteUserEP).Methods("DELETE")
 	fmt.Println("Starting API :8000")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }	

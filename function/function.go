@@ -71,3 +71,10 @@ func GetAllUser() []models.User {
 	personal.Close(context.Background())
 	return arrayPersonal
 }
+
+func DeleteUser(user models.User){
+	_,err := db.Collection(COLLECTIONNAME).DeleteOne(context.Background(), user, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
